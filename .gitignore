@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+.env
+
+# NodeJS
+node_modules/
+dist/
+.DS_Store
+
+# Data (Optional - keep sample data, ignore large DBs)
+backend/chroma_db/

@@ -1,0 +1,11 @@
+Medicine Name,Dosage,Stock,Unit,Prescription Required
+Paracetamol,500mg,100,Tablets,No
+Azithromycin,500mg,50,Tablets,Yes
+Ibuprofen,400mg,80,Tablets,No
+Amoxicillin,500mg,30,Capsules,Yes
+Cetirizine,10mg,120,Tablets,No
+Metformin,500mg,60,Tablets,Yes
+Atorvastatin,20mg,45,Tablets,Yes
+Aspirin,75mg,150,Tablets,No
+Omeprazole,20mg,90,Capsules,No
+Losartan,50mg,40,Tablets,Yes

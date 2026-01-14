@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+pandas
+sqlalchemy
+openai
+langchain
+# langchain-google-genai
+langchain-ollama
+langchain-community
+langgraph
+langfuse
+langchain-chroma
+chromadb
+python-multipart
+python-dotenv
+requests
