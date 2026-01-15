@@ -21,33 +21,41 @@ Since your local machine might struggle with heavy Vision models like `llama3.2-
 ## Step 2: Create a Colab Notebook
 Create a new notebook and run these cells:
 
-### Cell 1: Clone Repo & Install
+### Cell 1: Setup Workspace & Install Ollama (Run this first!)
 ```python
-# Clone your repository
-!git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git project
+# 1. Update System & Install Zstd (Required for Ollama)
+!sudo apt-get update && sudo apt-get install -y zstd
+
+# 2. Clone Repo
+!git clone https://github.com/ChinmayIngle26/antigravity-pharmacy.git project
 %cd project
 
-# Install Python deps
+# 3. Install Python Deps
 !pip install -r backend/requirements.txt
 !pip install pyngrok uvicorn nest-asyncio langchain-ollama langchain-chroma
 
-# Install Ollama
+# 4. Install Ollama
+print("Installing Ollama...")
 !curl -fsSL https://ollama.com/install.sh | sh
-```
 
-### Cell 2: Start Ollama & Pull Models
-```python
+# 5. Start Ollama
 import subprocess
 import time
 
-# Start Ollama in background
-subprocess.Popen(["ollama", "serve"])
-time.sleep(5) # Give it time to start
+print("Starting Ollama Server...")
+# Run using absolute path
+process = subprocess.Popen("/usr/local/bin/ollama serve", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+time.sleep(10)  # Wait for it to boot
 
-# Pull Models (this uses the Colab GPU!)
-!ollama pull llama3.1
-!ollama pull nomic-embed-text
-!ollama pull llama3.2-vision
+# Verify it's running
+!ps aux | grep ollama
+
+# 6. Pull Models
+print("Pulling Models (This may take a few minutes)...")
+!/usr/local/bin/ollama pull llama3.1
+!/usr/local/bin/ollama pull nomic-embed-text
+!/usr/local/bin/ollama pull llama3.2-vision
+print("✅ Setup Complete!")
 ```
 
 ### Cell 3: Setup Ngrok (External Access)
@@ -66,15 +74,8 @@ print(f"🚀 Backend Public URL: {public_url}")
 
 ### Cell 4: Run FastAPI Backend
 ```python
-import uvicorn
-from backend.main import app
-import nest_asyncio
-
-# Patch asyncio to allow running inside Colab
-nest_asyncio.apply()
-
-# Start Server
-uvicorn.run(app, host="0.0.0.0", port=8000)
+# Run uvicorn as a shell command to avoid asyncio loop errors in Colab
+!uvicorn backend.main:app --host 0.0.0.0 --port 8000
 ```
 
 ## Step 3: Update Local Frontend

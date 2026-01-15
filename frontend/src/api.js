@@ -1,10 +1,19 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000';
+// const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://janiyah-hyperorganic-kenton.ngrok-free.dev';
+
+// Axios instance with default headers to bypass ngrok warning
+const api = axios.create({
+    baseURL: API_BASE_URL,
+    headers: {
+        "ngrok-skip-browser-warning": "true"
+    }
+});
 
 export const chatWithAgent = async (message, threadId = "default") => {
     try {
-        const response = await axios.post(`${API_BASE_URL}/chat`, {
+        const response = await api.post(`/chat`, {
             message,
             thread_id: threadId
         });
@@ -16,16 +25,16 @@ export const chatWithAgent = async (message, threadId = "default") => {
 };
 
 export const getInventory = async () => {
-    const response = await axios.get(`${API_BASE_URL}/inventory`);
+    const response = await api.get(`/inventory`);
     return response.data;
 };
 
 export const getOrderHistory = async () => {
-    const response = await axios.get(`${API_BASE_URL}/history`);
+    const response = await api.get(`/history`);
     return response.data;
 };
 
 export const getAlerts = async () => {
-    const response = await axios.get(`${API_BASE_URL}/alerts`);
+    const response = await api.get(`/alerts`);
     return response.data.alerts; // Expecting list of strings
 };
