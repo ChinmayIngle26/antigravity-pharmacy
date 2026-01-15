@@ -14,20 +14,25 @@ def analyze_prescription_image(image_bytes: bytes) -> str:
     img_b64 = base64.b64encode(image_bytes).decode("utf-8")
     
     prompt = """
-    You are an artificial intelligence assistant that specializes in OCR (Optical Character Recognition) for medical prescriptions.
+    You are an expert medical AI assistant specialized in reading doctor's handwriting.
     
-    Task: Identify the medication details in this image.
-    If the text is handwritten, do your best to decipher it.
+    CRITICAL TASK:
+    1. Scan the image for any handwritten text (cursive or print).
+    2. Decipher the medicine name, dosage (mg/ml), and quantity/frequency.
+    3. Ignore pre-printed template text (like "Dr." or "Clinic").Focus on the pen-written parts.
+    4. Infer common medical abbreviations (e.g., 'QD' = once daily, 'BID' = twice daily) if useful for 'instructions'.
     
-    Return the result as a strictly valid JSON object with these keys:
+    Output Result:
+    Return a SINGLE VALID JSON object containing:
     {
-      "medicine_name": "Name of the drug (e.g. Amoxicillin)",
-      "dosage": "Dosage string (e.g. 500mg)",
-      "quantity": "Quantity integer (e.g. 10)",
-      "instructions": "Directions (e.g. Take one tablet daily)"
+      "medicine_name": "string",
+      "dosage": "string",
+      "quantity": "integer (or null if not found)",
+      "instructions": "string (deciphered directions)"
     }
     
-    Constraint: Return ONLY the JSON object. Do not output markdown code blocks (like ```json). Do not output any conversational text.
+    If you are unsure about a specific word, provide your best guess based on medical context.
+    RETURN ONLY THE JSON BLOCK.
     """
     
     msg = HumanMessage(
