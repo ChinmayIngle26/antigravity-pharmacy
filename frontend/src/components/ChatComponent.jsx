@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, Mic, MicOff, Bot, User } from 'lucide-react';
-import { chatWithAgent } from '../api';
+import { Send, Mic, MicOff, Bot, User, Camera, Paperclip } from 'lucide-react';
+import { chatWithAgent, uploadPrescription } from '../api';
 
 const ChatComponent = () => {
   const [messages, setMessages] = useState([
-    { role: 'ai', content: 'Hello! I am your AI Pharmacist. How can I help you today?' }
+    { role: 'ai', content: 'Hello! I am your AI Pharmacist. upload a prescription image or ask me anything.' }
   ]);
   const [input, setInput] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -64,8 +65,42 @@ const ChatComponent = () => {
 
   const stopListening = () => {
     setIsListening(false);
-    // Logic to stop if needed, but simple recognition stops auto
   };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setLoading(true);
+    // Show image preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        setMessages(prev => [...prev, { role: 'user', content: <img src={e.target.result} alt="Prescription" className="max-w-[200px] rounded" /> }]);
+    };
+    reader.readAsDataURL(file);
+
+    try {
+        const result = await uploadPrescription(file);
+        let responseText = "";
+        
+        if (result.medicine_name) {
+            responseText = `Analyzed Prescription:\n- Medicine: ${result.medicine_name}\n- Dosage: ${result.dosage}\n- Quantity: ${result.quantity}\n\nShall I place this order for you?`;
+            // could ask to confirm
+        } else if (result.raw_text) {
+             responseText = `I tried to read the prescription but couldn't structure it perfectly. Here is what I see:\n${result.raw_text}`;
+        } else {
+            responseText = result.error || "Sorry, I couldn't read the prescription.";
+        }
+        
+        setMessages(prev => [...prev, { role: 'ai', content: responseText }]);
+    } catch (error) {
+        setMessages(prev => [...prev, { role: 'ai', content: "Error uploading image." }]);
+    }
+    setLoading(false);
+    // Reset input
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
 
   return (
     <div className="flex flex-col h-[600px] w-full max-w-2xl bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
@@ -94,8 +129,24 @@ const ChatComponent = () => {
         <button 
           onClick={toggleVoice}
           className={`p-2 rounded-full transition-colors ${isListening ? 'bg-red-100 text-red-500' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+          title="Voice Input"
         >
           {isListening ? <MicOff size={20} /> : <Mic size={20} />}
+        </button>
+
+        <input 
+            type="file" 
+            ref={fileInputRef} 
+            onChange={handleFileUpload} 
+            accept="image/*" 
+            className="hidden" 
+        />
+        <button 
+            onClick={() => fileInputRef.current.click()}
+            className="p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+            title="Upload Prescription"
+        >
+             <Camera size={20} />
         </button>
         
         <input

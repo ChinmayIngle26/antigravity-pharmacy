@@ -38,3 +38,20 @@ export const getAlerts = async () => {
     const response = await api.get(`/alerts`);
     return response.data.alerts; // Expecting list of strings
 };
+
+export const uploadPrescription = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const response = await api.post(`/upload-prescription`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Upload error", error);
+        return { error: "Failed to upload prescription." };
+    }
+};
