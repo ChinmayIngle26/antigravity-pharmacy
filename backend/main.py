@@ -124,14 +124,20 @@ async def upload_prescription(file: UploadFile = File(...)):
     # Analyze
     try:
         result_json_str = analyze_prescription_image(contents)
-        # Attempt to parse to ensure it's valid JSON
-        # Llama might return markdown blocks ```json ... ```, need to clean
-        cleaned_str = result_json_str.replace("```json", "").replace("```", "").strip()
-        try:
-            data = json.loads(cleaned_str)
-        except json.JSONDecodeError:
-             # Fallback if JSON is malformed, just return the raw text
-             data = {"raw_text": cleaned_str}
+        
+        # Robust JSON extraction using regex
+        import re
+        match = re.search(r'\{.*\}', result_json_str, re.DOTALL)
+        if match:
+            json_str = match.group(0)
+            try:
+                data = json.loads(json_str)
+            except json.JSONDecodeError:
+                data = {"raw_text": result_json_str, "error": "Found JSON-like block but failed to parse."}
+        else:
+             # Fallback if no JSON found
+             data = {"raw_text": result_json_str, "error": "No JSON object found in response."}
+             
         return data
     except Exception as e:
         return {"error": f"Failed to process image: {str(e)}", "raw_output": str(e)}

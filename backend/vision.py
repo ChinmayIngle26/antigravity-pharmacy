@@ -32,7 +32,10 @@ def analyze_prescription_image(image_bytes: bytes) -> str:
     }
     
     If you are unsure about a specific word, provide your best guess based on medical context.
-    RETURN ONLY THE JSON BLOCK.
+    
+    IMPORTANT: Output NOTHING else but the JSON. 
+    Do not print "Here is the JSON", "Explanation:", or markdown formatting. 
+    Just start with { and end with }.
     """
     
     msg = HumanMessage(
