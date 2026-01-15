@@ -9,6 +9,7 @@ class Medicine(Base):
     dosage = Column(String)
     stock = Column(Integer)
     unit = Column(String)
+    price = Column(Float, default=0.0)
     prescription_required = Column(Boolean, default=False)
 
 class OrderHistory(Base):

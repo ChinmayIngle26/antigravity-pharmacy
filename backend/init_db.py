@@ -23,9 +23,10 @@ def init_db():
                 med = Medicine(
                     name=row["Medicine Name"],
                     dosage=row["Dosage"],
-                    stock=int(row["Stock"]),
-                    unit=row["Unit"],
-                    prescription_required=(row["Prescription Required"] == "Yes")
+                    stock=int(row["stock"]),
+                    unit=row["unit"],
+                    price=float(row["price"]),
+                    prescription_required=(str(row.get("prescription_required", "No")) == "Yes")
                 )
                 session.add(med)
             print(f"Added {len(df_med)} medicines.")
