@@ -1,11 +1,31 @@
-Medicine Name,Dosage,Stock,Unit,Prescription Required
-Paracetamol,500mg,100,Tablets,No
-Azithromycin,500mg,50,Tablets,Yes
-Ibuprofen,400mg,80,Tablets,No
-Amoxicillin,500mg,30,Capsules,Yes
-Cetirizine,10mg,120,Tablets,No
-Metformin,500mg,60,Tablets,Yes
-Atorvastatin,20mg,45,Tablets,Yes
-Aspirin,75mg,150,Tablets,No
-Omeprazole,20mg,90,Capsules,No
-Losartan,50mg,40,Tablets,Yes
+name,stock,unit,price
+Paracetamol 500mg,500,tablets,2.50
+Ibuprofen 400mg,300,tablets,4.00
+Amoxicillin 500mg,100,capsules,8.50
+Lisinopril 10mg,200,tablets,5.00
+Atorvastatin 20mg,150,tablets,12.00
+Metformin 500mg,400,tablets,3.50
+Amlodipine 5mg,250,tablets,6.00
+Cetirizine 10mg,600,tablets,3.00
+Albuterol Inhaler,50,units,25.00
+Omeprazole 20mg,180,capsules,9.00
+Sertraline 50mg,120,tablets,15.00
+Levothyroxine 50mcg,200,tablets,10.00
+Prednisone 5mg,100,tablets,4.50
+Tramadol 50mg,80,capsules,7.00
+Azithromycin 250mg,60,tablets,14.00
+Warfarin 5mg,90,tablets,8.00
+Insulin Glargine,20,pens,45.00
+Pantoprazole 40mg,150,tablets,11.00
+Gabapentin 300mg,200,capsules,9.50
+Furosemide 40mg,100,tablets,3.00
+Ciprofloxacin 500mg,80,tablets,7.50
+Doxycycline 100mg,100,capsules,6.50
+Losartan 50mg,150,tablets,8.00
+Simvastatin 20mg,180,tablets,4.50
+Clopidogrel 75mg,120,tablets,18.00
+Aspirin 81mg,1000,tablets,1.50
+Montelukast 10mg,90,tablets,13.00
+Escitalopram 10mg,100,tablets,16.00
+Hydrochlorothiazide 25mg,200,tablets,2.00
+Metoprolol 50mg,150,tablets,5.50

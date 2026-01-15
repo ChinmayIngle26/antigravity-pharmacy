@@ -1,38 +1,96 @@
-DRUG SAFETY AND INTERACTION DATABASE
+# Common Drug Interactions and Side Effects Knowledge Base
 
-PARACETAMOL (Acetaminophen)
-- Class: Analgesic/Antipyretic.
-- Safety: Safe for most adults in labeled doses (max 4g/day).
-- Interactions: avoid taking with alcohol (liver toxicity risk). No major interaction with antibiotics.
-- Side Effects: Rare. Liver damage in overdose.
+## 1. Analgesics (Painkillers)
+**Paracetamol (Acetaminophen)**
+- **Interactions**:
+  - Warfarin: Long-term daily use of paracetamol may increase the risk of bleeding.
+  - Alcohol: Chronic excessive alcohol use increases the risk of liver damage (hepatotoxicity).
+  - Isoniazid: Increased risk of hepatotoxicity.
+- **Side Effects**: Rare but can include skin rash, liver damage (in overdose).
 
-AMOXICILLIN
-- Class: Antibiotic (Penicillin type).
-- Safety: Safe if not allergic to penicillin.
-- Interactions: potentially reduces effectiveness of oral contraceptives.
-- Side Effects: Nausea, diarrhea, rash.
+**Ibuprofen (NSAID)**
+- **Interactions**:
+  - Aspirin: Reduces antiplatelet effect of aspirin; increases risk of stomach ulcers.
+  - Warfarin/Blood Thinners: Significantly increases bleeding risk.
+  - ACE Inhibitors (e.g., Lisinopril): Can reduce antihypertensive effect and cause kidney strain.
+  - Corticosteroids: High risk of gastrointestinal bleeding.
+- **Side Effects**: Stomach pain, heartburn, nausea, increased blood pressure.
 
-IBUPROFEN (Advil, Motrin)
-- Class: NSAID.
-- Safety: Use with caution in patients with stomach ulcers, kidney issues, or high blood pressure.
-- Interactions:
-  - ASPIRIN: Avoid combination (increases bleeding risk).
-  - WARFARIN (Blood thinners): HIGH RISK. Do not combine (major bleeding risk).
-  - Alcohol: Increases risk of stomach bleeding.
-- Side Effects: Stomach pain, heartburn.
+**Tramadol**
+- **Interactions**:
+  - SSRIs (e.g., Fluoxetine): Risk of Serotonin Syndrome (agitation, confusion, rapid heart rate).
+  - Benzodiazepines: Profound sedation, respiratory depression.
+  - MAO Inhibitors: Contraindicated due to risk of seizure and serotonin syndrome.
+- **Side Effects**: Dizziness, drowsiness, nausea, constipation.
 
-CETIRIZINE (Zyrtec)
-- Class: Antihistamine.
-- Safety: Non-drowsy (usually), but can cause drowsiness in some.
-- Interactions: Avoid with alcohol or sedatives (increases drowsiness).
-- Side Effects: Dry mouth, fatigue.
+## 2. Antibiotics
+**Amoxicillin**
+- **Interactions**:
+  - Methotrexate: Can increase toxicity of methotrexate by reducing its excretion.
+  - Warfarin: May increase bleeding tendency (INR monitoring recommended).
+  - Allopurinol: Higher risk of skin rash.
+- **Side Effects**: Diarrhea, nausea, skin rash, yeast infections.
 
-METFORMIN
-- Class: Antidiabetic.
-- Safety: Watch for lactic acidosis (rare).
-- Interactions: Alcohol (increases lactic acidosis risk). Iodinated contrast dyes (stop before CT scans).
+**Azithromycin**
+- **Interactions**:
+  - Statins (e.g., Atorvastatin): Increased risk of muscle toxicity (rhabdomyolysis).
+  - Warfarin: Potential increase in bleeding risk.
+  - Antacids (Aluminum/Magnesium): Reduces absorption of Azithromycin (separate by 2 hours).
+- **Side Effects**: Stomach upset, diarrhea, nausea.
 
-LISINOPRIL
-- Class: ACE Inhibitor.
-- Safety: Watch for dry cough.
-- Interactions: Potassium supplements (risk of high potassium). NSAIDs (can reduce effectiveness).
+## 3. Cardiovascular
+**Lisinopril (ACE Inhibitor)**
+- **Interactions**:
+  - Potassium Supplements/Spironolactone: Risk of Hyperkalemia (high potassium).
+  - NSAIDs (Ibuprofen/Naproxen): Can reduce efficacy and harm kidneys.
+  - Lithium: Increases lithium toxicity risk.
+- **Side Effects**: Dry cough, dizziness, headache, high potassium levels.
+
+**Atorvastatin (Statin)**
+- **Interactions**:
+  - Grapefruit Juice: Increases atorvastatin levels, leading to toxicity.
+  - Erythromycin/Clarithromycin: Increases risk of muscle damage.
+  - Cyclosporine: Increases risk of myopathy.
+- **Side Effects**: Muscle pain, digestive problems, liver enzyme changes.
+
+**Amlodipine (Calcium Channel Blocker)**
+- **Interactions**:
+  - Simvastatin: Amlodipine increases exposure to Simvastatin (limit Simvastatin to 20mg).
+  - CYP3A4 Inhibitors (e.g., Ketoconazole): Increases amlodipine levels.
+- **Side Effects**: Swelling of ankles (edema), palpitations, flushing.
+
+## 4. Antidiabetic
+**Metformin**
+- **Interactions**:
+  - Contrast Dye (Iodine): Risk of lactic acidosis (stop metformin 48h before procedure).
+  - Alcohol: Increases risk of lactic acidosis.
+  - Cimetidine: May increase metformin levels.
+- **Side Effects**: Nausea, diarrhea, metallic taste, B12 deficiency (long term).
+
+## 5. Psychiatric / Neurological
+**Sertraline (Zoloft) - SSRI**
+- **Interactions**:
+  - MAOIs: Contraindicated (Serotonin Syndrome risk).
+  - NSAIDs: Increased risk of bleeding.
+  - Sumatriptan: Risk of Serotonin Syndrome.
+- **Side Effects**: Insomnia, nausea, reduced libido, fatigue.
+
+**Levothyroxine**
+- **Interactions**:
+  - Calcium/Iron Supplements: Reduces absorption (separate by 4 hours).
+  - Soy products: May reduce absorption.
+  - Warfarin: May increase effects of warfarin.
+- **Side Effects**: Palpitations, heat intolerance, weight loss (if dose too high).
+
+## 6. Respiratory
+**Albuterol (Salbutamol)**
+- **Interactions**:
+  - Beta-blockers: Can block the bronchodilator effect.
+  - Diuretics: Risk of hypokalemia (low potassium).
+- **Side Effects**: Tremors, nervousness, palpitations.
+
+**Cetirizine (Zyrtec)**
+- **Interactions**:
+  - Alcohol/Sedatives: Increases drowsiness.
+  - Theophylline: May decrease clearance of cetirizine.
+- **Side Effects**: Drowsiness, dry mouth, headache.
