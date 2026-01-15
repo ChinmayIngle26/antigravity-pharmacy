@@ -110,3 +110,28 @@ def get_history():
     } for h in history]
     db.close()
     return data
+
+@app.post("/upload-prescription")
+async def upload_prescription(file: UploadFile = File(...)):
+    """
+    Endpoint to analyze uploaded prescription images.
+    """
+    from .vision import analyze_prescription_image
+    import json
+    
+    contents = await file.read()
+    
+    # Analyze
+    try:
+        result_json_str = analyze_prescription_image(contents)
+        # Attempt to parse to ensure it's valid JSON
+        # Llama might return markdown blocks ```json ... ```, need to clean
+        cleaned_str = result_json_str.replace("```json", "").replace("```", "").strip()
+        try:
+            data = json.loads(cleaned_str)
+        except json.JSONDecodeError:
+             # Fallback if JSON is malformed, just return the raw text
+             data = {"raw_text": cleaned_str}
+        return data
+    except Exception as e:
+        return {"error": f"Failed to process image: {str(e)}", "raw_output": str(e)}
