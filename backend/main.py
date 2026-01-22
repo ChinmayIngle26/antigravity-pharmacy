@@ -87,7 +87,7 @@ def get_inventory():
     
     db = SessionLocal()
     meds = db.query(Medicine).all()
-    data = [{"id": m.id, "name": m.name, "stock": m.stock, "unit": m.unit, "price": m.price} for m in meds]
+    data = [{"id": m.id, "name": m.name, "stock": m.stock, "unit": m.unit, "price": m.price, "category": m.category} for m in meds]
     db.close()
     return data
 

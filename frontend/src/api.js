@@ -39,6 +39,16 @@ export const getAlerts = async () => {
     return response.data.alerts; // Expecting list of strings
 };
 
+export const getPatients = async () => {
+    const response = await api.get(`/patients`);
+    return response.data;
+};
+
+export const getCurrentPatient = async () => {
+    const response = await api.get(`/patient/current`);
+    return response.data;
+};
+
 export const uploadPrescription = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
