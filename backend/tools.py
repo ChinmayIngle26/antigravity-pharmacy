@@ -14,12 +14,20 @@ def check_medicine_stock(medicine_name: str) -> str:
     """Check if a medicine is in stock and return details."""
     db = SessionLocal()
     try:
-        med = db.query(Medicine).filter(Medicine.name.ilike(medicine_name)).first()
+        # Use partial matching (searching for "Amoxicillin" finds "Amoxicillin 500mg")
+        meds = db.query(Medicine).filter(Medicine.name.ilike(f"%{medicine_name}%")).all()
         
-        if not med:
+        if not meds:
             return f"Medicine '{medicine_name}' not found in inventory."
         
-        return f"{med.name}: {med.stock} {med.unit} available. Dosage: {med.dosage}. Prescription Required: {med.prescription_required}"
+        if len(meds) == 0:
+             return f"Medicine '{medicine_name}' not found."
+             
+        results = []
+        for med in meds:
+             results.append(f"{med.name}: {med.stock} {med.unit} available. Dosage: {med.dosage}. Prescription Required: {med.prescription_required}. Price: ${med.price}")
+        
+        return "\n".join(results)
     finally:
         db.close()
 
@@ -27,10 +35,11 @@ def place_order(patient_id: str, medicine_name: str, quantity: int) -> str:
     """Place an order for a medicine. deducts stock if available."""
     db = SessionLocal()
     try:
-        med = db.query(Medicine).filter(Medicine.name.ilike(medicine_name)).first()
+        # Partial match to find the medicine
+        med = db.query(Medicine).filter(Medicine.name.ilike(f"%{medicine_name}%")).first()
         
         if not med:
-            return f"Error: Medicine '{medicine_name}' not found."
+            return f"Error: Medicine '{medicine_name}' not found. Please check exact name."
         
         if med.stock < quantity:
             return f"Error: Insufficient stock. Only {med.stock} {med.unit} remaining."
