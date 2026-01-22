@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getInventory, getAlerts, getOrderHistory } from '../api';
+import { getInventory, getAlerts, getOrderHistory, getPatients } from '../api';
 import { AlertTriangle, Package, History, DollarSign, Activity, TrendingUp } from 'lucide-react';
 
 import { Users } from 'lucide-react'; // Import Users icon
@@ -229,17 +229,34 @@ const AlertsPanel = ({ alerts }) => (
 // ... (Helper Components)
 
 const PatientsPanel = () => {
-  const [patients, setPatients] = React.useState([]);
+  const [patients, setPatients] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPatients = async () => {
-      // Assuming api.js exports getPatients
-      const { getPatients } = await import('../api'); 
-      const data = await getPatients();
-      setPatients(data);
+      try {
+          const data = await getPatients();
+          setPatients(data || []);
+      } catch (err) {
+          console.error("Failed to fetch patients", err);
+      } finally {
+          setLoading(false);
+      }
     };
     fetchPatients();
   }, []);
+
+  if (loading) return <div className="text-center text-gray-500 mt-10">Loading patients...</div>;
+  
+  if (patients.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center py-10 text-gray-400">
+            <Users size={48} className="mb-4 opacity-50" />
+            <p className="text-lg">No patients found</p>
+            <p className="text-sm mt-2 opacity-70">Run 'init_db.py' in backend to seed data.</p>
+        </div>
+      );
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
