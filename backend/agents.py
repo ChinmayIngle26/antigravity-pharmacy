@@ -4,7 +4,7 @@ from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import MemorySaver
 from langchain_core.messages import SystemMessage, HumanMessage
 from typing import Annotated, List
-from .tools import check_medicine_stock, place_order, get_patient_history, check_low_stock_alerts, SessionLocal, search_knowledge_base
+from .tools import check_medicine_stock, place_order, get_patient_history, check_low_stock_alerts, SessionLocal, search_knowledge_base, check_drug_interaction
 from .models import OrderHistory, Medicine
 from datetime import datetime
 
@@ -18,7 +18,7 @@ llm = ChatOllama(
 )
 
 # Define Tools
-tools = [check_medicine_stock, place_order, get_patient_history, check_low_stock_alerts, search_knowledge_base]
+tools = [check_medicine_stock, place_order, get_patient_history, check_low_stock_alerts, search_knowledge_base, check_drug_interaction]
 
 # System Prompt
 SYSTEM_PROMPT = """You are an Expert Pharmacist Agent for 'AntiGravity Pharmacy'.

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, Mic, MicOff, Bot, User, Camera, Paperclip, Loader2 } from 'lucide-react';
+import { Send, Mic, MicOff, Bot, User, Camera, Paperclip, Loader2, Volume2 } from 'lucide-react';
 import { chatWithAgent, uploadPrescription } from '../api';
 
 const ChatComponent = () => {
@@ -122,13 +122,30 @@ const ChatComponent = () => {
       <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-300`}>
-            <div className={`max-w-[85%] p-4 rounded-2xl shadow-md backdrop-blur-sm ${
-              msg.role === 'user' 
-                ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-br-none border border-blue-500/30' 
-                : 'bg-white/10 text-gray-100 rounded-bl-none border border-white/5'
-            }`}>
-              <div className="whitespace-pre-wrap leading-relaxed text-sm">{msg.content}</div>
-            </div>
+             <div className="flex flex-col gap-1 items-start">
+                <div className={`max-w-[85%] p-4 rounded-2xl shadow-md backdrop-blur-sm ${
+                msg.role === 'user' 
+                    ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-br-none border border-blue-500/30' 
+                    : 'bg-white/10 text-gray-100 rounded-bl-none border border-white/5'
+                }`}>
+                <div className="whitespace-pre-wrap leading-relaxed text-sm">{msg.content}</div>
+                </div>
+                 {/* Speak Button for individual messages */}
+                {msg.role === 'ai' && (
+                    <button 
+                        onClick={() => {
+                            if ('speechSynthesis' in window) {
+                                window.speechSynthesis.cancel();
+                                const utterance = new SpeechSynthesisUtterance(msg.content);
+                                window.speechSynthesis.speak(utterance);
+                            }
+                        }}
+                        className="text-xs text-blue-300/50 hover:text-blue-300 ml-2 flex items-center gap-1"
+                    >
+                        <Volume2 size={12} /> Play
+                    </button>
+                )}
+             </div>
           </div>
         ))}
         {loading && (

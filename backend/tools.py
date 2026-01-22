@@ -35,12 +35,32 @@ def place_order(patient_id: str, medicine_name: str, quantity: int) -> str:
     """Place an order for a medicine. deducts stock if available."""
     db = SessionLocal()
     try:
-        # Partial match to find the medicine
+        # 1. Validate Medicine
         med = db.query(Medicine).filter(Medicine.name.ilike(f"%{medicine_name}%")).first()
-        
         if not med:
             return f"Error: Medicine '{medicine_name}' not found. Please check exact name."
         
+        # 2. Get Patient Info for Safety Checks
+        # For this demo, we assume patient_id maps to 'id' or we search by name if string.
+        # But to be robust, let's try to match by name if not integer
+        from .models import Patient
+        patient = None
+        if patient_id.isdigit():
+             patient = db.query(Patient).filter(Patient.id == int(patient_id)).first()
+        else:
+             patient = db.query(Patient).filter(Patient.name.ilike(f"%{patient_id}%")).first()
+             
+        # If no specific patient found, fallback or warn (For demo purposes we might skip checks if patient unknown)
+        if patient:
+             # ALLERGY CHECK
+             allergies = [a.strip().lower() for a in patient.allergies.split(",")] if patient.allergies else []
+             med_name = med.name.lower()
+             med_cat = med.category.lower() if med.category else ""
+             
+             for allergy in allergies:
+                 if allergy in med_name or allergy in med_cat:
+                     return f"🚨 SAFETY ALERT: Order BLOCKED. Patient {patient.name} is allergic to {allergy} ({med.name} is a {med.category}). Please ask user for authorization/confirmation before overriding (Functionality to override not implemented yet)."
+
         if med.stock < quantity:
             return f"Error: Insufficient stock. Only {med.stock} {med.unit} remaining."
         
@@ -61,6 +81,14 @@ def place_order(patient_id: str, medicine_name: str, quantity: int) -> str:
         return f"Order success! {quantity} {med.unit} of {med.name} ordered for {patient_id}. Webhook triggered for warehouse fulfillment."
     finally:
         db.close()
+
+def check_drug_interaction(medicine_one: str, medicine_two: str) -> str:
+    """
+    Check for harmful interactions between two medicines.
+    Uses the RAG knowledge base to find safety information.
+    """
+    query = f"Is there a drug interaction between {medicine_one} and {medicine_two}?"
+    return search_knowledge_base(query)
 
 def get_patient_history(patient_id: str) -> str:
     """Get recent purchase history for a patient."""
