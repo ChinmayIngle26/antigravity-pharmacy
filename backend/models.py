@@ -10,7 +10,18 @@ class Medicine(Base):
     stock = Column(Integer)
     unit = Column(String)
     price = Column(Float, default=0.0)
+    category = Column(String, default="General")
+    description = Column(String, default="")
     prescription_required = Column(Boolean, default=False)
+
+class Patient(Base):
+    __tablename__ = "patients"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    age = Column(Integer)
+    allergies = Column(String, default="") # Comma separated
+    conditions = Column(String, default="") # Comma separated
 
 class OrderHistory(Base):
     __tablename__ = "order_history"
