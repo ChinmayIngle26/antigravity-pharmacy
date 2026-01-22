@@ -141,3 +141,48 @@ async def upload_prescription(file: UploadFile = File(...)):
         return data
     except Exception as e:
         return {"error": f"Failed to process image: {str(e)}", "raw_output": str(e)}
+
+@app.get("/patients")
+def get_patients():
+    """
+    List all patients for admin view.
+    """
+    from .database import SessionLocal
+    from .models import Patient
+    
+    db = SessionLocal()
+    patients = db.query(Patient).all()
+    data = [{
+        "id": p.id,
+        "name": p.name,
+        "age": p.age,
+        "allergies": p.allergies,
+        "conditions": p.conditions
+    } for p in patients]
+    db.close()
+    return data
+
+@app.get("/patient/current")
+def get_current_patient():
+    """
+    Get the simulated 'current user' context.
+    For this demo, we just return the first patient (John Doe).
+    """
+    from .database import SessionLocal
+    from .models import Patient
+    
+    db = SessionLocal()
+    # Just grab the first one for simplicity of the demo
+    patient = db.query(Patient).first()
+    if not patient:
+         return {"error": "No patients found"}
+         
+    data = {
+        "id": patient.id,
+        "name": patient.name,
+        "age": patient.age,
+        "allergies": patient.allergies,
+        "conditions": patient.conditions
+    }
+    db.close()
+    return data

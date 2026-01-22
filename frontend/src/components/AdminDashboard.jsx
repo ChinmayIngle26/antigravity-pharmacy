@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { getInventory, getAlerts, getOrderHistory } from '../api';
 import { AlertTriangle, Package, History, DollarSign, Activity, TrendingUp } from 'lucide-react';
 
+import { Users } from 'lucide-react'; // Import Users icon
+
 const AdminDashboard = () => {
   const [inventory, setInventory] = useState([]);
   const [alerts, setAlerts] = useState([]);
@@ -71,6 +73,12 @@ const AdminDashboard = () => {
           label="Inventory" 
         />
         <TabButton 
+          active={activeTab === 'patients'} 
+          onClick={() => setActiveTab('patients')} 
+          icon={<Users size={18} />} 
+          label="Patients" 
+        />
+        <TabButton 
           active={activeTab === 'history'} 
           onClick={() => setActiveTab('history')} 
           icon={<History size={18} />} 
@@ -88,6 +96,7 @@ const AdminDashboard = () => {
       {/* Content Area */}
       <div className="flex-1 overflow-y-auto p-6 bg-black/20 backdrop-blur-sm">
         {activeTab === 'inventory' && <InventoryTable data={inventory} />}
+        {activeTab === 'patients' && <PatientsPanel />}
         {activeTab === 'history' && <HistoryPanel />}
         {activeTab === 'alerts' && <AlertsPanel alerts={alerts} />}
       </div>
@@ -216,5 +225,59 @@ const AlertsPanel = ({ alerts }) => (
     )}
   </div>
 );
+
+// ... (Helper Components)
+
+const PatientsPanel = () => {
+  const [patients, setPatients] = React.useState([]);
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      // Assuming api.js exports getPatients
+      const { getPatients } = await import('../api'); 
+      const data = await getPatients();
+      setPatients(data);
+    };
+    fetchPatients();
+  }, []);
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {patients.map((p) => (
+        <div key={p.id} className="bg-white/5 border border-white/10 p-5 rounded-xl hover:bg-white/10 transition-colors">
+          <div className="flex justify-between items-start mb-2">
+            <div>
+              <h3 className="text-lg font-bold text-white">{p.name}</h3>
+              <div className="text-sm text-gray-400">ID: #{p.id.toString().padStart(4, '0')} • Age: {p.age}</div>
+            </div>
+            <div className="bg-blue-500/20 text-blue-300 px-2 py-1 rounded text-xs">Active</div>
+          </div>
+          
+          <div className="space-y-2 mt-4">
+            <div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Allergies</div>
+              <div className="flex flex-wrap gap-2">
+                {p.allergies && p.allergies !== "None" ? (
+                  p.allergies.split(',').map((alg, i) => (
+                    <span key={i} className="px-2 py-1 bg-red-500/20 text-red-300 rounded text-xs border border-red-500/30">
+                      {alg.trim()}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-gray-500 text-sm">No known allergies</span>
+                )}
+              </div>
+            </div>
+            
+             <div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Conditions</div>
+              <div className="text-sm text-gray-300">{p.conditions || "None"}</div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default AdminDashboard;
